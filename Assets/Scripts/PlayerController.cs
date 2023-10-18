@@ -34,6 +34,17 @@ public class PlayerController : MonoBehaviour
 
     public int squashCount;
 
+    bool canDash=true;
+    bool isDashing=false;
+    public float dashingPower = 24f;
+    public float dashingTime = 0.2f;
+    public float dashingCoolDown = 1f;
+    TrailRenderer tr;
+
+    public TrailRenderer smashTr;
+
+
+
     public GameManager gm;
 
     // Start is called before the first frame update
@@ -42,12 +53,17 @@ public class PlayerController : MonoBehaviour
         myBody = GetComponent<Rigidbody2D>();
         myAnim = GetComponent<Animator>();
         mySR = GetComponent<SpriteRenderer>();
+        tr = GetComponent<TrailRenderer>();
         HealthBar.gameObject.GetComponent<HealthBar>().SetMaxHealth(health);
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (isDashing)
+        {
+            return;
+        }
         horizontalMove = Input.GetAxis("Horizontal");
 
         if (Input.GetButtonDown("Jump") && grounded)
@@ -72,12 +88,31 @@ public class PlayerController : MonoBehaviour
         }
         if (horizontalMove > 0f)
         {
-
+            Vector2 localScale = transform.localScale;
+           localScale.x = 1f;
+            transform.localScale = localScale;
         }
+        if (horizontalMove < 0f)
+        {
+            Vector2 localScale = transform.localScale;
+            localScale.x = -1f;
+            transform.localScale = localScale;
+        }
+
+
+        if (Input.GetKeyDown(KeyCode.LeftShift) && canDash)
+        {
+            StartCoroutine(Dash());
+        }
+     
     }
 
     private void FixedUpdate()
     {
+        if (isDashing)
+        {
+            return;
+        }
         float moveSpeed = speed * horizontalMove;
 
         if (jump)
@@ -96,18 +131,18 @@ public class PlayerController : MonoBehaviour
         }
 
         if (smashing)
-        {
+        { 
+            smashTr.emitting = true;
+            mySR.color = Color.red;
             myBody.AddForce(Vector2.down * smashPower, ForceMode2D.Impulse);
         }
-
+      
         RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, castDist);
         Debug.DrawRay(transform.position, Vector2.down * castDist, Color.red);
 
         if(hit.collider!=null && hit.transform.tag == "Ground")
         {
             myAnim.SetBool("jumping", false);
-            myAnim.SetBool("smashing", false);
-            smashing = false;
             grounded = true;
         }
         else
@@ -143,9 +178,37 @@ public class PlayerController : MonoBehaviour
         }
        
     }
-    void afterHit()
-    {
+    void afterHit() { 
+    
         mySR.color = Color.white;
         invincible = false;
+    }
+
+    private IEnumerator Dash()
+    {
+        Debug.Log("dashing");
+        canDash = false;
+        isDashing = true;
+        float originalGravity = myBody.gravityScale;
+        myBody.gravityScale = 0f;
+        myBody.velocity = new Vector2(transform.localScale.x* dashingPower, 0f);
+        tr.emitting = true;
+        yield return new WaitForSeconds(dashingTime);
+        tr.emitting = false;
+        myBody.gravityScale = originalGravity;
+        isDashing = false;
+        yield return new WaitForSeconds(dashingCoolDown);
+        canDash = true;
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if(smashing&& collision.transform.tag == "Ground")
+        {
+            myAnim.SetBool("smashing", false);
+            smashing = false;
+            smashTr.emitting = false;
+            mySR.color = Color.white;
+        }
     }
 }
