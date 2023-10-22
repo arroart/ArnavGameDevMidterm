@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using Cinemachine;
 
 public class EnemyMovement : MonoBehaviour
 {
@@ -16,17 +17,17 @@ public class EnemyMovement : MonoBehaviour
     public bool movesHorizontal =true;
     bool playerSmashing = false;
 
-    public GameObject count;
-    TextMeshProUGUI squashCounter;
+    public CinemachineImpulseSource impSource;
 
     SpriteRenderer mySR;
+
+    public GameManager gm;
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         endPoint = pointB.transform;
         mySR = GetComponent<SpriteRenderer>();
-        squashCounter = count.GetComponent<TextMeshProUGUI>();
     }
 
     // Update is called once per frame
@@ -78,15 +79,33 @@ public class EnemyMovement : MonoBehaviour
             mySR.flipX = false;
             endPoint = pointB.transform;
         }
+        if (collision.gameObject == player)
+        {
+            if (playerSmashing)
+            {
+                impSource.GenerateImpulse();
+                gm.changeLightHealth();
+                Destroy(gameObject);
+            }
+            else
+            {
+                Vector2 direction = (collision.transform.position - transform.position).normalized;
+                Debug.Log(direction);
+                player.GetComponent<PlayerController>().Damage(damage, direction);
+            }
+
+        }
+    
     }
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject == player)
         {
             if (playerSmashing)
             {
-                player.GetComponent<PlayerController>().squashCount++;
-                squashCounter.text = (player.GetComponent<PlayerController>().squashCount).ToString();
+                impSource.GenerateImpulse();
+                gm.changeLightHealth();
                 Destroy(gameObject);
             }
             else

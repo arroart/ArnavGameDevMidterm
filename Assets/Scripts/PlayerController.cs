@@ -9,6 +9,7 @@ public class PlayerController : MonoBehaviour
     public float speed = 2f;
 
     Rigidbody2D myBody;
+    public Rigidbody2D outerBody;
 
     bool grounded = false;
     public bool smashing = false;
@@ -29,7 +30,7 @@ public class PlayerController : MonoBehaviour
     public GameObject HealthBar;
 
     public int health = 10;
-    public float knockbackForce = 100f;
+    public float knockbackForce = 5f;
     bool invincible = false;
 
     public int squashCount;
@@ -170,7 +171,7 @@ public class PlayerController : MonoBehaviour
             mySR.color = Color.red;
 
             Vector2 force = direction * knockbackForce;
-            myBody.AddForce(force, ForceMode2D.Impulse);
+            outerBody.AddForce(force, ForceMode2D.Impulse);
 
             HealthBar.gameObject.GetComponent<HealthBar>().SetHealth(health);
 
@@ -210,5 +211,14 @@ public class PlayerController : MonoBehaviour
             smashTr.emitting = false;
             mySR.color = Color.white;
         }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        Debug.Log("hi");
+        if (collision.gameObject.tag == "FollowLight")
+        {
+            gm.ResetLevel();
+        } 
     }
 }
