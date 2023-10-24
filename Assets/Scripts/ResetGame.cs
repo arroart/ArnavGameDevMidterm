@@ -5,6 +5,7 @@ using UnityEngine;
 public class ResetGame : MonoBehaviour
 {
     public GameManager gm;
+    public GameObject player;
     // Start is called before the first frame update
     void Start()
     {
@@ -20,7 +21,7 @@ public class ResetGame : MonoBehaviour
     {
         if (collision.gameObject.name == "Player")
         {
-            gm.ResetLevel();
+            player.GetComponent<PlayerController>().Respawn();
         }
     }
 }

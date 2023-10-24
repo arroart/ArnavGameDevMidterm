@@ -44,6 +44,8 @@ public class PlayerController : MonoBehaviour
 
     public TrailRenderer smashTr;
 
+    public GameObject respawnPoint;
+
 
 
     public GameManager gm;
@@ -163,7 +165,7 @@ public class PlayerController : MonoBehaviour
             Debug.Log(health);
             if (health<=0)
             {
-                gm.ResetLevel();
+                Respawn();
             }
 
             invincible = true;
@@ -218,7 +220,27 @@ public class PlayerController : MonoBehaviour
         Debug.Log("hi");
         if (collision.gameObject.tag == "FollowLight")
         {
-            gm.ResetLevel();
-        } 
+            Respawn();
+        }
+
+        if (collision.gameObject.tag == "Respawn")
+        {
+            Debug.Log("1");
+            if (respawnPoint != collision.gameObject)
+            {
+                Debug.Log("2");
+                respawnPoint.GetComponent<RespawnPoint>().unsetRespawn();
+                collision.GetComponent<RespawnPoint>().setRespawn();
+            }
+            
+        }
+    }
+
+    public void Respawn()
+    {
+        if (respawnPoint != null)
+        {
+            transform.position = respawnPoint.transform.position;
+        }
     }
 }
