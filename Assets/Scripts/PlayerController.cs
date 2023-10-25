@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class PlayerController : MonoBehaviour
 {
@@ -51,13 +52,16 @@ public class PlayerController : MonoBehaviour
 
     public Vector2 knockDirection;
 
-
+    int resetCounter;
+    public GameObject rCount;
+    TextMeshProUGUI rCounter;
 
     public GameManager gm;
 
     // Start is called before the first frame update
     void Start()
     {
+        rCounter= rCount.GetComponent<TextMeshProUGUI>();
         health = MaxHealth;
         myBody = GetComponent<Rigidbody2D>();
         myAnim = GetComponent<Animator>();
@@ -255,6 +259,8 @@ public class PlayerController : MonoBehaviour
     {
         if (respawnPoint != null)
         {
+            resetCounter++;
+            rCounter.text=resetCounter.ToString();
             health = MaxHealth;
             HealthBar.gameObject.GetComponent<HealthBar>().SetHealth(health);
             mySR.color = Color.white;

@@ -27,6 +27,7 @@ public class EnemyMovement : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        GetComponent<Collider2D>().isTrigger=true;
         rb = GetComponent<Rigidbody2D>();
         endPoint = pointB.transform;
         mySR = GetComponent<SpriteRenderer>();

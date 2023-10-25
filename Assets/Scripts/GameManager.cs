@@ -45,12 +45,13 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        lightHealth= maxLH;
         if (lightBar != null)
         {
             lightBar.gameObject.GetComponent<HealthBar>().SetMaxHealth(maxLH);
             lightBar.gameObject.GetComponent<HealthBar>().SetHealth(lightHealth);
         }
-       
+
         LHCounter = count.GetComponent<TextMeshProUGUI>();
         LHCounter.text = lightHealth.ToString();
     }
