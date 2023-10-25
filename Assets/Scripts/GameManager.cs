@@ -8,12 +8,14 @@ using TMPro;
 public class GameManager : MonoBehaviour
 {
     public int maxLH = 10;
-    public static int lightHealth=10;
+    public static int lightHealth=2;
     public GameObject lightBar;
     public GameObject lightCircle;
 
     public GameObject count;
     TextMeshProUGUI LHCounter;
+
+    public GameObject portal;
 
     public void LoadGame()
     {
@@ -36,14 +38,19 @@ public class GameManager : MonoBehaviour
 
         if (lightHealth <= 0)
         {
+            portal.SetActive(true);
             Destroy(lightCircle);
         }
     }
 
     private void Start()
     {
-        lightBar.gameObject.GetComponent<HealthBar>().SetMaxHealth(maxLH);
-        lightBar.gameObject.GetComponent<HealthBar>().SetHealth(lightHealth);
+        if (lightBar != null)
+        {
+            lightBar.gameObject.GetComponent<HealthBar>().SetMaxHealth(maxLH);
+            lightBar.gameObject.GetComponent<HealthBar>().SetHealth(lightHealth);
+        }
+       
         LHCounter = count.GetComponent<TextMeshProUGUI>();
         LHCounter.text = lightHealth.ToString();
     }

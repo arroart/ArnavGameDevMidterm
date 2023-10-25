@@ -14,6 +14,10 @@ public class StickHealth : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.position = lightCircle.transform.position;
+        if (lightCircle != null)
+        {
+            transform.position = lightCircle.transform.position;
+        }
+        
     }
 }

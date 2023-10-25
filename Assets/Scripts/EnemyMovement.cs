@@ -17,6 +17,8 @@ public class EnemyMovement : MonoBehaviour
     public bool movesHorizontal =true;
     bool playerSmashing = false;
 
+    public GameObject explosionParticles;
+
     public CinemachineImpulseSource impSource;
 
     SpriteRenderer mySR;
@@ -83,6 +85,7 @@ public class EnemyMovement : MonoBehaviour
         {
             if (playerSmashing)
             {
+                Instantiate(explosionParticles,transform.position, explosionParticles.transform.rotation);
                 impSource.GenerateImpulse();
                 gm.changeLightHealth();
                 Destroy(gameObject);
@@ -104,8 +107,10 @@ public class EnemyMovement : MonoBehaviour
         {
             if (playerSmashing)
             {
+                
                 impSource.GenerateImpulse();
                 gm.changeLightHealth();
+                
                 Destroy(gameObject);
             }
             else

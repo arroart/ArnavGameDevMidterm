@@ -81,7 +81,7 @@ public class PlayerController : MonoBehaviour
             jump = true;
         }
 
-        if (Input.GetKeyDown(KeyCode.DownArrow) && !grounded)
+        if ((Input.GetKeyDown(KeyCode.DownArrow)|| Input.GetKeyDown(KeyCode.S))&& !grounded)
         {
             smashing = true;
             myAnim.SetBool("smashing", true);
@@ -186,7 +186,7 @@ public class PlayerController : MonoBehaviour
 
             mySR.color = Color.red;
 
-            damageForce = true;
+            //damageForce = true;
             //Vector2 force = direction * knockbackForce;
             //myBody.AddForce(force, ForceMode2D.Impulse);
 

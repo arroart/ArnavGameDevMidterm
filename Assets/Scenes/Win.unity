@@ -608,6 +608,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a914a3bdaae248f58f020c095f412c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxLH: 10
+  lightBar: {fileID: 0}
+  lightCircle: {fileID: 0}
+  count: {fileID: 0}
+  portal: {fileID: 0}
 --- !u!4 &717882792
 Transform:
   m_ObjectHideFlags: 0
