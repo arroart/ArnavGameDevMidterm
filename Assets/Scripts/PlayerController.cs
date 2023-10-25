@@ -261,7 +261,11 @@ public class PlayerController : MonoBehaviour
         {
             resetCounter++;
             rCounter.text=resetCounter.ToString();
-            health = MaxHealth;
+            if (health == 0)
+            {
+                health = MaxHealth;
+            }
+            
             HealthBar.gameObject.GetComponent<HealthBar>().SetHealth(health);
             mySR.color = Color.white;
             transform.position = respawnPoint.transform.position;

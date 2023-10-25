@@ -12335,7 +12335,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 329408946}
-  nextLevel: Main
+  nextLevel: Game2
   gm: {fileID: 531310285}
 --- !u!1 &320467130
 GameObject:
@@ -41470,11 +41470,11 @@ PrefabInstance:
       objectReference: {fileID: 514682498}
     - target: {fileID: 5951505445051890608, guid: f81b65031b0c24b53a2c935ad7cd6e3c, type: 3}
       propertyPath: smashPower
-      value: 4
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 5951505445051890608, guid: f81b65031b0c24b53a2c935ad7cd6e3c, type: 3}
       propertyPath: gravityFall
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5951505445051890608, guid: f81b65031b0c24b53a2c935ad7cd6e3c, type: 3}
       propertyPath: respawnPoint
