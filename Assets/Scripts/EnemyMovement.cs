@@ -112,7 +112,9 @@ public class EnemyMovement : MonoBehaviour
             {
                 Vector2 direction = (collision.transform.position - transform.position).normalized;
                 Debug.Log(direction);
+                player.GetComponent<PlayerController>().knockDirection=direction;
                 player.GetComponent<PlayerController>().Damage(damage, direction);
+
             }
             
         }

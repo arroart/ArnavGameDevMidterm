@@ -29,7 +29,8 @@ public class PlayerController : MonoBehaviour
 
     public GameObject HealthBar;
 
-    public int health = 10;
+    public int MaxHealth = 10;
+    public int health;
     public float knockbackForce = 5f;
     bool invincible = false;
 
@@ -46,6 +47,10 @@ public class PlayerController : MonoBehaviour
 
     public GameObject respawnPoint;
 
+    bool damageForce = false;
+
+    public Vector2 knockDirection;
+
 
 
     public GameManager gm;
@@ -53,11 +58,12 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        health = MaxHealth;
         myBody = GetComponent<Rigidbody2D>();
         myAnim = GetComponent<Animator>();
         mySR = GetComponent<SpriteRenderer>();
         tr = GetComponent<TrailRenderer>();
-        HealthBar.gameObject.GetComponent<HealthBar>().SetMaxHealth(health);
+        HealthBar.gameObject.GetComponent<HealthBar>().SetMaxHealth(MaxHealth);
     }
 
     // Update is called once per frame
@@ -154,6 +160,14 @@ public class PlayerController : MonoBehaviour
 
         }
 
+        if (damageForce)
+        {
+            Debug.Log("aa");
+            damageForce = false;
+            Vector2 force = knockDirection * knockbackForce;
+            outerBody.AddForce(force, ForceMode2D.Impulse);
+        }
+
         myBody.velocity = new Vector3(moveSpeed, myBody.velocity.y, 0f);
     }
 
@@ -172,8 +186,9 @@ public class PlayerController : MonoBehaviour
 
             mySR.color = Color.red;
 
-            Vector2 force = direction * knockbackForce;
-            outerBody.AddForce(force, ForceMode2D.Impulse);
+            damageForce = true;
+            //Vector2 force = direction * knockbackForce;
+            //myBody.AddForce(force, ForceMode2D.Impulse);
 
             HealthBar.gameObject.GetComponent<HealthBar>().SetHealth(health);
 
@@ -240,6 +255,9 @@ public class PlayerController : MonoBehaviour
     {
         if (respawnPoint != null)
         {
+            health = MaxHealth;
+            HealthBar.gameObject.GetComponent<HealthBar>().SetHealth(health);
+            mySR.color = Color.white;
             transform.position = respawnPoint.transform.position;
         }
     }

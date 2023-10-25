@@ -13,7 +13,10 @@ public class RespawnPoint : MonoBehaviour
     void Start()
     {
         anim = GetComponent<Animator>();
-        
+        if(player.GetComponent<PlayerController>().respawnPoint == gameObject)
+        {
+            setRespawn();
+        }
     }
 
     // Update is called once per frame
@@ -28,6 +31,8 @@ public class RespawnPoint : MonoBehaviour
         respawnPoint.GetComponent<SpriteRenderer>().color = Color.white;
         respawnPoint.GetComponent<TrailRenderer>().emitting = true;
         respawnPoint.GetComponent<ParticleSystem>().enableEmission = true;
+        Vector3 newScale = respawnPoint.transform.localScale *1.5f;
+        respawnPoint.transform.localScale= newScale;
         anim.SetBool("isActive", true);
         player.GetComponent<PlayerController>().respawnPoint = gameObject;
 
@@ -38,6 +43,8 @@ public class RespawnPoint : MonoBehaviour
         respawnPoint.GetComponent<SpriteRenderer>().color = Color.gray;
         respawnPoint.GetComponent<TrailRenderer>().emitting = false;
         respawnPoint.GetComponent<ParticleSystem>().enableEmission = false;
+        Vector3 newScale = respawnPoint.transform.localScale * 0.75f;
+        respawnPoint.transform.localScale = newScale;
         anim.SetBool("isActive", false);
     }
 }
